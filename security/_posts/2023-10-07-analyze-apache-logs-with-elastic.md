@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Analyze Apache Access Logs with Elastic
-date:   2023-10-07 21:45:00 -0400
+date:   2023-10-07 21:45:00 -0500
 tags: security elastic apache logstash kibana
 ---
 
