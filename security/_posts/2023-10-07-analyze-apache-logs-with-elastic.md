@@ -29,7 +29,7 @@ Agents are highly configurable and can be customized to support any application 
 ### Apache Access Log
 Below you can see the contents of the `access.log` file that is stored in logging directory of the Apache server. Every web request that the webserver receives is logged here as text. Each message contains a timestamp that can be used to index the log event.
 
-![Apache access.log file](/assets/security/analyze-apache-logs-with-elastic/apache-access-log.png)
+![Apache access.log file](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/apache-access-log.png?raw=true)
 
 An Apache access log is a file that records information about client requests made to an Apache web server. The log records a range of information about each request, including the IP address of the client, the time of the request, the request method (e.g. GET or POST), the requested resource, the HTTP response code, and the size of the response.
 
@@ -80,12 +80,12 @@ This is just a basic example of a Logstash configuration file for Apache access 
 
 Below is the contents of `/etc/logstash/conf.d/apache.conf` on our server, which stores the filtering rules that inform the pipeline on how to format the data in the json it's sending to the Elastic server, and where to look for the logs. Note that we're mapping the `clientip` field to the type `geoip` . This tells the Elastic server to take the ip address data from the log event and populate additional geo fields to add to the event json that can give us coordinates for the ip. You can read more about GeoIP in the Elastic Stack [here](https://www.elastic.co/blog/geoip-in-the-elastic-stack).
 
-![apache.conf](/assets/security/analyze-apache-logs-with-elastic/apache.conf.png)
+![apache.conf](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/apache.conf.png?raw=true)
 
 ### Generating Logs
 Now that Elastic is configured to ingest logs from our webserver, we can generate a few logs by visiting the site in a browser. Here is what our simple website looks like:
 
-![generating logs](/assets/security/analyze-apache-logs-with-elastic/website.png)
+![generating logs](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/website.png?raw=true)
 
 As you can see, our site is very basic. Our connection to the site is not encrypted with TLS. The only security measures that've been taken on the webserver are the configuration of a firewall and access hardening (only accept ssh keys and only allow ssh connections from my home network's external IP address).
 
@@ -98,7 +98,7 @@ Apache log events are typically displayed in a table or list format in Kibana. E
 
 For example, an Apache log event in Kibana on our server looks like this:
 
-![An example apache log event](/assets/security/analyze-apache-logs-with-elastic/example-apache-log-event.png)
+![An example apache log event](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/example-apache-log-event.png?raw=true)
 
 ### Events in Aggregate
 The Discover page in Kibana is a tool for searching and analyzing log data. It allows users to view, filter, and query log events in real-time, as well as to generate charts and other visualizations to gain insights into the data.
@@ -119,7 +119,7 @@ In addition to viewing the log events, users can also use the Discover page to g
 
 Here is what the discover page looks like on our server:
 
-![Apache log events in aggregate](/assets/security/analyze-apache-logs-with-elastic/kibana-discover-view.png)
+![Apache log events in aggregate](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/kibana-discover-view.png?raw=true)
 
 You might think that the only log events we should see here are the ones that were generated when we visited the site in the browser, but here we can see that there are already more requests from other external ip addresses. Who are these people?
 
@@ -138,7 +138,7 @@ HTTP response status codes are returned by the webserver to the client to indica
 
 Here you can see a pie chart displaying the different status codes that have been received by the server in the last 7 days. The webserver has been running for ~4 days at this point.
 
-![Data visualisation](/assets/security/analyze-apache-logs-with-elastic/data-visualisation.png)
+![Data visualisation](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/data-visualisation.png?raw=true)
 
 It looks like status the code that is returned the most is `200`, followed by `404`. Here's what these codes mean:
 
@@ -153,7 +153,7 @@ It looks like status the code that is returned the most is `200`, followed by `4
 
 Data visualizations can be a valuable tool when seeking to answer quick questions like "What are the most common HTTP methods that are used in our web requests?"
 
-![Data visualisation](/assets/security/analyze-apache-logs-with-elastic/top-request-verbs.png)
+![Data visualisation](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/top-request-verbs.png?raw=true)
 
 The HTTP method that is used to make the request determines the action to be performed on the resource that is identified by the path in the request url.
 
@@ -168,7 +168,7 @@ The HTTP method that is used to make the request determines the action to be per
 
 We can use a treemap visualization to take a look at the most common resources that are requested (using the path in the URL) for each response code that is returned for all `POST` requests the webserver has received:
 
-![Post paths by response](/assets/security/analyze-apache-logs-with-elastic/visualise-post-paths-by-response.png)
+![Post paths by response](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/visualise-post-paths-by-response.png?raw=true)
 
 This visualization was created by selecting the `response.keyword` and `request.keyword` fields to group by and filtering the log events to be passed to the visualization to `POST` requests.
 
@@ -176,7 +176,7 @@ We can see that the most frequently requested resource to `POST` to on our webse
 
 We can take a closer look at these requests in the Discover section with some filters:
 
-![Boaform discover](/assets/security/analyze-apache-logs-with-elastic/boaform-discover.png)
+![Boaform discover](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/boaform-discover.png?raw=true)
 
 How do these servers know that our server is running a webserver? Most likely, they don't. Malicious actors iterate through external ip addresses with requests based on known existing security vulnerabilities. Most of the time they will not receive a successful response, but botnets can contain hundreds of thousands of infected nodes. Even a very low success rate can be very profitable depending on the vulnerability.
 
@@ -199,11 +199,11 @@ In some cases, dashboards in security infrastructure and event management softwa
 
 Data visualizations can be collected in dashboards to allow users to see visualizations that can be made up of data from a variety of sources. Below is a screenshot of an example overview dashboard that a webmaster might user to monitor the perfomance of their Apache server.
 
-![Webmaster dashboard](/assets/security/analyze-apache-logs-with-elastic/webserver-dashboard.png)
+![Webmaster dashboard](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/webserver-dashboard.png?raw=true)
 
 This dashboard contains a few interesting visualizations using geo data from the log events.
 
-![Geo data dashboard](/assets/security/analyze-apache-logs-with-elastic/webmaster-geo-dashboard.png)
+![Geo data dashboard](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/webmaster-geo-dashboard.png?raw=true)
 
 ### Drilling Down
 "Drilling down" is a term used in the context of security infrastructure and event management software to describe the process of investigating a particular security event or incident in more detail.
@@ -215,15 +215,15 @@ To "drill down" into a security event or incident, security personnel can use th
 The goal of "drilling down" into a security event or incident is to gather as much information as possible about the event and its potential impact. This can help security personnel understand the nature and severity of the event and can provide them with the information they need to take appropriate action to prevent or mitigate the event. Ultimately, "drilling down" into security events and incidents can help organizations improve their security posture and better protect themselves against potential threats.
 
 In this screenshot example, the user has "drilled down" on the client country visualisation by selecting the United States. This dashboard was created to display various geo data, but by drlling down through the webmaster dashboard a filter has been applied that only populates the visualisations with events from the United States.
-![Drill down dashboard](/assets/security/analyze-apache-logs-with-elastic/geo-dashboard-drilldown.png)
+![Drill down dashboard](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/geo-dashboard-drilldown.png?raw=true)
 
 This dashboard has been created to display information regarding post requests made to the server.
 
-![Drill down dashboard](/assets/security/analyze-apache-logs-with-elastic/bad-actor-dashboard.png)
+![Drill down dashboard](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/bad-actor-dashboard.png?raw=true)
 
 By selecting the part of the treemap that represents the 50% of requests that are targeting that boaform path, we can drill down into the geo data dashboard that we saw before with some filters applied to only show us log events that are associated with that path. 
 
-![Drill down dashboard](/assets/security/analyze-apache-logs-with-elastic/boaform-geo-drilldown.png)
+![Drill down dashboard](https://github.com/dpfrederick/blog/blob/main/assets/security/analyze-apache-logs-with-elastic/boaform-geo-drilldown.png?raw=true)
 
 ## Conclusion
 This post has explained to use the Elastic stack to process, search, and visualize Apache access logs. It has also provided examples of how to use the various tools in the stack to gain insights into the server's traffic and performance.
